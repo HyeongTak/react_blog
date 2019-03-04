@@ -6,7 +6,7 @@
   "author": "HyeongTak <andy395023@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_PATH=src nodemon --exec babel-node index.js"
+    "start": "cross-env NODE_PATH=src nodemon --exec babel-node index.js"
   },
   "dependencies": {
     "dotenv": "^6.2.0",
