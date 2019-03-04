@@ -1,13 +1,13 @@
 import Post from 'models/Post';
 import Joi from 'joi';
 
-import { Types as ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 // ObjectId 검증 함수
 exports.checkObjectId = (ctx, next) => {
   const { id } = ctx.params;
 
-  if (!ObjectId.isValid(id)) {
+  if (!Types.ObjectId.isValid(id)) {
     ctx.status = 400;
     return null;
   }
@@ -45,6 +45,20 @@ exports.read = async (ctx) => {
 };
 
 exports.write = async (ctx) => {
+  // RequestBody(객체가 가진 값) 검증
+  const schema = Joi.object().keys({
+    title: Joi.string().required(),
+    body: Joi.string().required()
+  });
+  
+  const result = Joi.validate(ctx.request.body, schema);
+
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = result.error;
+    return;
+  }
+
   const { title, body } = ctx.request.body;
 
   // 새로운 포스트 인스턴스 생성
@@ -59,6 +73,7 @@ exports.write = async (ctx) => {
     ctx.throw(err, 500);
   }
 };
+
 
 exports.update = async (ctx) => {
   const { id } = ctx.params;
