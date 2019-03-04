@@ -1,9 +1,12 @@
 import Router from 'koa-router';
+import postsCtrl from './posts.ctrl';
 
 const posts = new Router();
 
-posts.get('/', (ctx) => {
-  ctx.body = '포스트 라우터 잘 되나요??'
-});
+posts.get('/', postsCtrl.list);
+posts.get('/:id', postsCtrl.read);
+posts.post('/', postsCtrl.write); 
+posts.put('/:id', postsCtrl.update);
+posts.delete('/:id', postsCtrl.remove);
 
 export default posts;
