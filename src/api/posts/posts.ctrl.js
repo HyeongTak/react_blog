@@ -15,16 +15,34 @@ exports.checkObjectId = (ctx, next) => {
   return next();
 }
 
-// List 컨트롤러 GET '/api/posts' : 포스트 글 리스트
 exports.list = async (ctx) => {
-    try {
-      const posts = await Post.find()
-        .exec();
-      
-      ctx.body = posts;
-    } catch(err) {
-      ctx.throw(err, 500);
-    }
+  const page = parseInt(ctx.query.page || 1, 10);
+
+  if (page < 1) {
+    ctx.status = 400;
+    return;
+  }
+
+  try {
+    const posts = await Post.find()
+      .sort({_id: -1})
+      .limit(10).skip((page - 1) * 10)
+      .lean()
+      .exec();
+
+    const lastPage = await Post.count().exec();
+
+    ctx.body = posts.map(post => ({
+      ...post,
+      body: post.body.length < 100 ?
+        post.body :
+        `${post.body.slice(0, 100)}...`
+    }));
+    
+    ctx.set('Last-Page', Math.ceil(lastPage / 10));
+  } catch(err) {
+    ctx.throw(err, 500);
+  }
 };
 
 exports.read = async (ctx) => {
