@@ -5,6 +5,8 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 
+import api from 'api';
+
 const app = new Koa();
 const router = new Router();
 
@@ -21,6 +23,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(mongoURI, { useNewUrlParser: true })
   .then(() => { console.log('몽고 DB 접속 완료'); })
   .catch((err) => { console.error(err); });
+
+router.use('/api', api.routes());
 
 // BodyParser 미들웨어 사용
 app.use(bodyParser());
