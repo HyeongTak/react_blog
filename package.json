@@ -9,12 +9,15 @@
     "start": "cross-env NODE_PATH=src nodemon --exec babel-node index.js"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
     "dotenv": "^6.2.0",
     "joi": "^14.3.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "mongoose": "^5.4.17"
+    "mongoose": "^5.4.17",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
